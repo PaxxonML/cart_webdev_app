@@ -21,25 +21,35 @@ public class ItemDatabase implements ItemRepository {
 
     @Override
     public BigDecimal findItemInventory(int itemId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findItemInventory'");
+        return items.get(itemId).price();
     }
 
     @Override
     public Item addItem(Item item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addItem'");
+        if (items.containsKey(item.itemId())) {
+            return null;
+        } else {
+            items.put(item.itemId(), item);
+            return item;
+        }
     }
 
     @Override
     public Item updateItem(Item item) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateItem'");
+        if (items.containsKey(item.itemId())) {
+            items.put(item.itemId(), item);
+            return item;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Item deleteItem(int itemId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteItem'");
+        if (items.containsKey(itemId)) {
+            return items.remove(itemId);
+        } else {
+            return null;
+        }
     }
 }
