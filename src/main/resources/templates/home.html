@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="${title}"></title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Bootstrap JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+	<!-- Navigation bar -->
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">Cart Website</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li th:class="${isHomeActive}"><a th:href="@{${hrefHome}}">Home</a></li>
+					<li th:class="${isProductsActive}"><a th:href="@{${hrefProducts}}">Products</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li th:class="${isCartActive}"><a th:href="@{${hrefCart}}"><span
+								class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+					<li th:class="${isLoginActive}"><a th:href="@{${hrefLogin}}"><span
+								class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Products 
+	<div th:class="${productsDisplay}">-->
+	<div class="container" th:style="${productsDisplay}">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81kr4+KCjJL._AC_UF350,350_QL80_.jpg"
+						alt="Product">
+					<div class="caption">
+						<h3>Tomate</h3>
+						<p>Price: $43.0</p>
+						<p><button class="btn btn-primary" role="button" onclick="addToCart(1)">Add to Cart</button></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="https://images.neopets.com/neopedia/170_potato.gif" alt="Product">
+					<div class="caption">
+						<h3>Papa</h3>
+						<p>Price: $24.0</p>
+						<a class="btn btn-primary" role="button" onclick="addToCart(2)">Add to Cart</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="thumbnail">
+					<img src="https://m.media-amazon.com/images/I/51W61Ea0weL._AC_UF350,350_QL80_.jpg" alt="Product">
+					<div class="caption">
+						<h3>Cebolla</h3>
+						<p>Price: $15.0</p>
+						<button class="btn btn-primary" role="button" onclick="addToCart(3)">Add to Cart</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Cart -->
+	<div class="container" th:style="${cartDisplay}">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Cart</h1>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Product</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${cart}">
+							<td th:text="${item[0]}"></td>
+							<td th:text="${item[1]}"></td>
+							<td th:text="${item[2]}"></td>
+							<td th:text="${item[3]}"></td>
+							<td><button class="btn btn-danger" role="button" onclick="removeFromCart(1)">Remove</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p><strong>Total: </strong><span th:text="${total}"></span></p>
+			</div>
+			
+		</div>
+	</div>
+
+	<!-- Login -->
+	<div class="container" th:style="${loginDisplay}">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Login</h1>
+				<form action="/login" method="post">
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Username">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password"
+							placeholder="Password">
+					</div>
+					<button type="submit" class="btn btn-primary">Login</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="container-fluid text-center">
+		<p>Cart Website &copy; 2023</p>
+	</footer>
+
+	<!-- JavaScript -->
+	<script>
+		function addToCart(productId) {
+			let quantity = prompt("How many do you want to add to cart?");
+			if (quantity == null) {
+				return;
+			}
+			if (isNaN(quantity) || quantity == "") {
+				alert("Please write a quantity");
+				return addToCart(productId);
+			}
+			console.log("Quantity: " + quantity)
+			alert("Product added to cart");
+			window.location.href = "/products?itemid=" + productId + "&quantity=" + quantity;
+		}
+	</script>
+</body>
+
+</html>
