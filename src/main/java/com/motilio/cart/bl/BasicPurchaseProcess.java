@@ -41,10 +41,23 @@ public class BasicPurchaseProcess implements PurchaseProcess {
     }
 
     @Override
-    public void Checkout() {
+    public String[] Checkout() {
         System.out.println("Checking out...");
-        System.out.println("Customer: " + this.customer.email());
         System.out.println("Total: " + this.shoppingCart.getTotal());
+        int totalDefinedItems = 4;
+        String[] output = new String[totalDefinedItems+1];
+        String product;
+        BigDecimal price, quantity;
+        for (int i = 1; i <= totalDefinedItems; i++) {
+            quantity = this.shoppingCart.GetItemQuantity(i);
+            if (quantity.compareTo(BigDecimal.ZERO) > 0) {
+                product = itemRepository.findItem(i).name();
+                price = itemRepository.findItem(i).price();
+                output[i-1] = product + "," + price + "," + quantity + "," + price.multiply(quantity);
+            }
+        }
+        output[output.length-1] = String.valueOf(this.shoppingCart.getTotal());
+        return output;
     }
 
     @Override
@@ -61,7 +74,7 @@ public class BasicPurchaseProcess implements PurchaseProcess {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Customer: " + this.customer.email()+"\n");
+        // sb.append("Customer: " + this.customer.email()+"\n");
         var items = this.shoppingCart.getItems();
         
         items.forEach((key, value) -> {
