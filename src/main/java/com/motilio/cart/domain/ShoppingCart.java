@@ -36,6 +36,15 @@ public class ShoppingCart {
         return this.items.get(item);
     }
 
+    public BigDecimal GetItemQuantity(int itemId) {
+        for (Item item : this.items.keySet()) {
+            if (item.itemId() == itemId) {
+                return this.items.get(item);
+            }
+        }
+        return new BigDecimal(0);
+    }
+
     public BigDecimal getTotal() {
         BigDecimal total = new BigDecimal(0);
         for (Item item : this.items.keySet()) {
